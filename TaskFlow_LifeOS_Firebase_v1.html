@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#07110b">
+<title>TaskFlow LifeOS — نظم حياتك بذكاء</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap');
+:root{--g:#39f5a0;--lime:#c5ff72;--bg:#07100b;--panel:#101e15;--panel2:#0b1710;--muted:#8da293;--line:#294333;--red:#ff7979;--amber:#ffd477;--blue:#8ac8ff;--radius:18px}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 10% 0%,#10492e55,transparent 36%),var(--bg);color:#f1fff5;font-family:Cairo,Arial,sans-serif;padding:18px}button,input,select,textarea{font:inherit}button{cursor:pointer;border:0;border-radius:11px;padding:10px 14px;font-weight:700;transition:.15s}button:hover{filter:brightness(1.08);transform:translateY(-1px)}button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--g);outline-offset:2px}
+.app{max-width:1320px;margin:auto}.top{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:22px}.brand{font-size:25px;color:var(--g);font-weight:800}.brand span{color:#fff}.sub,.muted{font-size:12px;color:var(--muted)}.nav{display:flex;gap:7px;flex-wrap:wrap}.nav button,.secondary{background:#183323;color:var(--g)}.nav button.active,.primary{background:linear-gradient(100deg,var(--g),var(--lime));color:#062015}.danger{background:#492322;color:#ffaaaa}.page{display:none;animation:fade .25s}.page.active{display:block}@keyframes fade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}.card{background:linear-gradient(145deg,#122319,#0a150e);border:1px solid #ffffff12;border-radius:var(--radius);padding:19px;min-width:0}.stat{grid-column:span 3}.stat b{display:block;font-size:27px;color:var(--g);margin-top:5px}.mainTasks{grid-column:span 7}.side{grid-column:span 5}.wide{grid-column:span 12}.progress{height:7px;background:#20382a;border-radius:99px;overflow:hidden;margin-top:10px}.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--g),var(--lime));transition:width .3s}.ring{width:145px;height:145px;margin:10px auto;position:relative}.ring svg{transform:rotate(-90deg);width:100%;height:100%}.ring circle{fill:none;stroke-width:10}.ring .track{stroke:#20382a}.ring .fill{stroke:var(--g);stroke-linecap:round;stroke-dasharray:440;stroke-dashoffset:440;transition:.5s}.ring label{position:absolute;inset:0;display:grid;place-content:center;font-size:28px;font-weight:800}
+.list{display:grid;gap:9px}.task{display:grid;grid-template-columns:26px minmax(0,1fr) auto;align-items:center;gap:9px;padding:12px;background:#ffffff07;border:1px solid #ffffff0d;border-radius:13px}.task.done{opacity:.62}.task.done .name{text-decoration:line-through}.name{font-weight:700;font-size:13px;overflow-wrap:anywhere}.meta{font-size:11px;color:var(--muted);margin-top:4px;display:flex;gap:8px;flex-wrap:wrap}.check{background:transparent;border:1px solid #52715c;color:var(--g);padding:4px 7px}.icon,.del{background:transparent;color:#9ab0a0;font-size:18px;padding:3px}.tag{background:#173323;color:#b5e8c2;border-radius:8px;padding:3px 7px;font-size:10px}.high{color:var(--lime)}.medium{color:var(--amber)}.low{color:var(--muted)}.info{min-width:0}.form{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}.input{background:#08130c;color:white;border:1px solid var(--line);border-radius:10px;padding:10px;min-width:0;flex:1}.timeline{display:flex;gap:10px;align-items:stretch;margin:10px 0;color:var(--muted);font-size:12px}.timeline time{min-width:50px;padding-top:9px;direction:ltr}.bar{flex:1;background:#17452d;padding:10px;border-radius:9px;color:white;border-right:3px solid var(--g)}.bar small{display:block;color:#b6d9c1}.timer{text-align:center;max-width:760px;margin:15px auto}.digits{font-size:clamp(60px,12vw,100px);color:var(--g);font-weight:800;direction:ltr}.tabs{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:14px}.tabs button{background:#173323;color:var(--muted)}.tabs button.active{background:var(--g);color:#062015}.chart{height:210px;display:flex;align-items:flex-end;gap:8px;justify-content:space-around;margin-top:20px}.col{height:100%;flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:7px;min-width:0}.bargraph{width:55%;background:linear-gradient(var(--g),#167545);border-radius:7px 7px 0 0;min-height:3px}.col span{font-size:10px;color:var(--muted)}.empty{padding:22px;text-align:center;color:var(--muted);font-size:13px}.floating-timer{position:fixed;z-index:10;bottom:15px;left:15px;display:flex;align-items:center;gap:9px;background:#0b1b11;border:1px solid #39f5a088;box-shadow:0 12px 35px #0009;border-radius:15px;padding:8px 11px}.floating-timer strong{direction:ltr;color:var(--g);font-size:16px;min-width:58px;text-align:center}.floating-timer small{display:block;color:var(--muted);font-size:10px}.floating-timer button{padding:6px 9px;font-size:12px}.prayers{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:12px}.prayer{background:#ffffff08;border:1px solid #ffffff12;border-radius:12px;padding:10px 4px;text-align:center}.prayer b{display:block;font-size:12px;margin-bottom:7px}.prayer button{font-size:11px;padding:6px 8px;background:#173323;color:var(--muted)}.prayer button.checked{background:var(--g);color:#062015}.ai-input{width:100%;min-height:135px;resize:vertical;background:#06150e;color:#fff;border:1px solid var(--line);border-radius:13px;padding:13px;line-height:1.9;outline:none}.ai-result{margin-top:14px;padding:14px;background:#0c2115;border:1px solid #2d6541;border-radius:14px;line-height:1.9;font-size:13px}.toast{position:fixed;bottom:20px;right:20px;background:#153d29;color:var(--g);padding:12px 18px;border-radius:12px;opacity:0;transition:.25s;z-index:30;pointer-events:none}.toast.show{opacity:1}.modalback{position:fixed;inset:0;background:#000b;display:none;place-items:center;padding:16px;z-index:20}.modalback.show{display:grid}.modal{width:min(600px,100%);max-height:90vh;overflow:auto;background:#0b1d14;border:1px solid #31563b;border-radius:20px;padding:22px}.modal h2{margin:0 0 15px}.fields{display:grid;grid-template-columns:1fr 1fr;gap:10px}.fields label{display:grid;gap:5px;color:var(--muted);font-size:12px}.fields input,.fields select,.fields textarea{background:#06150e;border:1px solid var(--line);color:white;border-radius:10px;padding:10px;min-width:0}.fields .full{grid-column:1/-1}.actions{display:flex;justify-content:flex-end;gap:8px;margin-top:15px}.habits{display:grid;gap:9px}.habit{display:flex;gap:10px;align-items:center;padding:12px;background:#ffffff08;border-radius:13px}.habit .info{flex:1}.hint{background:#143c27;border:1px solid #2b593b;border-radius:14px;padding:13px;color:#c9dfcd;font-size:12px;line-height:1.8;margin-top:13px}.filters{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.filters>*{min-width:130px}.pill{display:inline-flex;align-items:center;gap:5px;padding:4px 8px;border-radius:99px;background:#183323;color:#b5e8c2;font-size:11px}.section-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}.smallbtn{padding:7px 10px;font-size:12px}.subtasks{margin-top:7px;padding-right:8px;border-right:2px solid #2e5b3d}.subtask{font-size:11px;color:#adc3b4;margin-top:3px}.overdue{color:var(--red)}.settings-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+
+.account-area{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.account-status{font-size:11px;color:var(--muted);background:#ffffff08;border:1px solid #ffffff12;border-radius:99px;padding:6px 10px}
+.auth-backdrop{position:fixed;inset:0;background:#000c;z-index:60;display:none;place-items:center;padding:16px}
+.auth-backdrop.show{display:grid}
+.auth-box{width:min(440px,100%);background:#0b1d14;border:1px solid #31563b;border-radius:20px;padding:22px;box-shadow:0 20px 70px #000b}
+.auth-box h2{margin:0 0 6px}.auth-box p{line-height:1.8}
+.auth-box input{display:block;width:100%;margin:9px 0;background:#06150e;border:1px solid var(--line);color:#fff;border-radius:10px;padding:12px}
+.auth-actions{display:grid;gap:8px;margin-top:12px}
+.auth-error{color:#ff9b9b;font-size:12px;min-height:20px;line-height:1.6}
+@media(max-width:900px){.account-area{width:100%;justify-content:space-between}.account-status{flex:1;text-align:center}}
+@media(max-width:900px){body{padding:10px}.top{align-items:flex-start;flex-direction:column}.stat{grid-column:span 6}.mainTasks,.side,.wide{grid-column:span 12}.card{padding:14px}.nav{width:100%}.nav button{flex:1 1 auto}.fields{grid-template-columns:1fr}.settings-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.stat{grid-column:span 6}.prayers{grid-template-columns:repeat(3,1fr)}.floating-timer{left:8px;bottom:8px}.floating-timer small{display:none}.settings-grid{grid-template-columns:1fr}.task{grid-template-columns:25px minmax(0,1fr) auto}.task .actions-inline{display:flex;flex-direction:column}}
+.day-start-item{display:flex;gap:10px;align-items:center;padding:10px;border:1px solid var(--line);border-radius:12px;margin:6px 0}.day-start-item .info{flex:1;min-width:0}.day-start-item .name{font-weight:700}.day-start-item .meta{font-size:12px;color:var(--muted)}.day-start-item button{white-space:nowrap}.warning-text{color:var(--amber)}
+</style>
+</head>
+<body><div class="app">
+<header class="top"><div><div class="brand">✦ Task<span>Flow</span> <span class="pill">LifeOS v3</span></div><h2 id="hello">أهلاً بيك 👋</h2><div class="sub" id="date"></div></div>
+<div class="account-area">
+<div class="account-status" id="cloudStatus">حفظ على هذا الجهاز</div>
+<button class="secondary smallbtn" id="accountButton" type="button">دخول / مزامنة</button>
+<button class="secondary smallbtn" id="signOutButton" type="button" hidden>خروج</button>
+</div>
+<nav class="nav" aria-label="التنقل"><button class="active" data-page="home">الرئيسية</button><button data-page="tasks">المهام</button><button data-page="schedule">الجدول</button><button data-page="habits">العادات</button><button data-page="assistant">المنظّم الذكي ✦</button><button data-page="focus">التركيز</button><button data-page="stats">الإحصائيات</button><button data-page="settings">الإعدادات</button></nav></header>
+<section id="home" class="page active"><div class="grid">
+<div class="card stat">مهام اليوم<b id="total">0</b><div class="progress"><i id="homeProg" style="width:0%"></i></div></div><div class="card stat">مكتملة<b id="done">0</b></div><div class="card stat">المتبقي<b id="left">0</b></div><div class="card stat">تركيز اليوم<b><span id="focusmins">0</span> <small>د</small></b></div>
+<div class="card side" style="text-align:center"><h3>إنجازك اليوم</h3><div class="ring"><svg viewBox="0 0 160 160"><circle class="track" cx="80" cy="80" r="70"/><circle class="fill" id="ring" cx="80" cy="80" r="70"/></svg><label id="pct">0%</label></div><p class="muted" id="msg">ابدأ بأول مهمة وخدها خطوة خطوة</p><div class="hint">الاستمرارية أهم من المثالية 🌱</div></div>
+<div class="card mainTasks"><div class="section-head"><h3>مهام النهارده</h3><button class="secondary" onclick="openTask()">＋ مهمة بتفاصيل</button></div><div class="list" id="list"></div><form class="form" id="quickForm"><input class="input" id="quickTitle" placeholder="اكتب المهمة هنا..." required maxlength="150"><select class="input" id="quickCategory"><option>دراسة</option><option>شغل</option><option>صلاة</option><option>صحة</option><option>شخصي</option></select><select class="input" id="quickPriority"><option value="عالية">عالية</option><option value="متوسطة" selected>متوسطة</option><option value="منخفضة">منخفضة</option></select><button class="primary">+ إضافة</button></form></div>
+<div class="card wide"><h3>صلوات اليوم 🤲</h3><div class="muted">سجلها بعد أدائها. لكل يوم سجل مستقل.</div><div class="prayers" id="prayerList"></div><div class="progress"><i id="prayerProg" style="width:0%"></i></div><div class="muted" id="prayerText" style="margin-top:7px">0 من 5</div></div>
+<div class="card wide" id="dayStartCard"><div class="section-head"><h3>ابدأ يومك — خطة قابلة للتنفيذ</h3><button class="secondary smallbtn" onclick="refreshDayStart()">تحديث</button></div><div class="muted" id="dayStartSummary">اختار أهم خطوة وابدأ.</div><div id="dayStartList" class="list" style="margin-top:10px"></div><div id="dayStartWarnings" class="hint" style="margin-top:10px"></div></div>
+<div class="card wide"><div class="section-head"><h3>خريطة يومك</h3><button class="secondary smallbtn" onclick="switchPage('schedule')">عرض الجدول</button></div><div id="homeSchedule"></div></div>
+</div></section>
+<section id="tasks" class="page"><div class="card"><div class="section-head"><h2>كل المهام</h2><button class="primary" onclick="openTask()">＋ مهمة جديدة</button></div><div class="filters"><input class="input" id="taskSearch" placeholder="ابحث عن مهمة..."><select class="input" id="taskFilter"><option value="all">كل الحالات</option><option value="open">غير مكتملة</option><option value="done">مكتملة</option><option value="overdue">متأخرة</option></select><select class="input" id="taskCategoryFilter"><option value="all">كل الأقسام</option><option>دراسة</option><option>شغل</option><option>صلاة</option><option>صحة</option><option>شخصي</option><option>أخرى</option></select></div><div class="list" id="allList"></div></div></section>
+<section id="schedule" class="page"><div class="card"><div class="section-head"><h2>جدولي ومواعيدي</h2><button class="primary" onclick="openEvent()">＋ موعد ثابت</button></div><p class="muted">الجدول يوضح المواعيد والمهام المحددة بوقت. راجع التعارضات قبل اعتماد الخطة.</p><div id="scheduleList"></div><div id="conflictBox"></div></div></section>
+<section id="habits" class="page"><div class="card"><div class="section-head"><h2>عاداتي اليومية 🌱</h2><button class="primary" onclick="openHabit()">＋ عادة</button></div><p class="muted">تسجيل مستقل لكل يوم مع الحفاظ على تاريخ العادة.</p><div class="habits" id="habitList"></div></div></section>
+<section id="assistant" class="page"><div class="card"><h2>المُنظّم الذكي ✦</h2><p class="muted">اكتب مهامك ومواعيدك. المنظّم المحلي يلتقط الوقت الصريح ويقترح توزيع المهام في الفجوات المتاحة. راجع الخطة قبل الاعتماد.</p><textarea class="ai-input" id="brainDump" placeholder="مثال:&#10;درس من 4 إلى 5:30 مساءً&#10;واجب رياضيات مهم 45 دقيقة&#10;مراجعة إنجليزي 30 دقيقة&#10;موعد الدكتور الساعة 7 مساءً"></textarea><div class="form"><button class="primary" id="organizeBtn">✦ اقترح جدولًا</button><button class="secondary" id="clearDump">مسح النص</button></div><div id="aiResult"></div><div class="hint">هذا إصدار تخطيط محلي يعتمد على قواعد واضحة وليس نموذج AI توليديًا. لا يرسل نصك لأي خدمة. ربط AI حقيقي مستقبلًا يحتاج خادمًا يحمي مفتاح الخدمة.</div></div></section>
+<section id="focus" class="page"><div class="card timer"><h2>مساحة التركيز 🎧</h2><p class="muted">اربط جلسة التركيز بمهمة لو حابب.</p><select class="input" id="focusTask" style="max-width:440px"><option value="">جلسة عامة</option></select><div class="tabs"><button class="active" data-min="25">25 دقيقة</button><button data-min="50">50 دقيقة</button><button data-min="5">استراحة</button></div><div class="digits" id="digits">25:00</div><p class="muted" id="timerhint">جلسة تركيز</p><div class="tabs"><button class="primary" id="start">ابدأ</button><button class="secondary" id="reset">إعادة</button></div><div class="form"><input class="input" id="custom" type="number" min="1" max="180" value="25"><button class="secondary" id="set">ضبط الوقت</button></div><div class="hint" id="sessionHint">الجلسات المكتملة تُحفظ في سجل التركيز.</div></div></section>
+<section id="stats" class="page"><h2>رحلة إنجازك 📊</h2><div class="tabs"><button class="active" data-period="day">اليوم</button><button data-period="week">الأسبوع</button><button data-period="month">الشهر</button></div><div class="grid"><div class="card stat">مهام مكتملة<b id="pd">0</b></div><div class="card stat">دقائق تركيز<b id="pf">0</b></div><div class="card stat">معدل الإنجاز<b id="pr">0%</b></div><div class="card wide"><h3 id="charttitle">إنجازك</h3><div class="chart" id="chart"></div></div><div class="card wide"><h3>توزيع وقت التركيز</h3><div id="focusBreakdown" class="muted"></div></div></div></section>
+<section id="settings" class="page"><div class="card"><h2>الإعدادات والنسخ الاحتياطي</h2><p class="muted">خصص ساعات يومك واحتفظ بنسخة من بياناتك.</p><div class="settings-grid"><label class="muted">بداية اليوم<input class="input" type="time" id="dayStart" value="08:00"></label><label class="muted">نهاية اليوم<input class="input" type="time" id="dayEnd" value="22:00"></label><label class="muted">فاصل بين المهام (دقيقة)<input class="input" type="number" id="buffer" min="0" max="60" value="10"></label></div><div class="form"><button class="primary" id="saveSettings">حفظ الإعدادات</button><button class="secondary" id="exportBtn">تصدير نسخة JSON</button><label class="secondary" style="padding:10px 14px;border-radius:11px;cursor:pointer">استيراد نسخة<input id="importFile" type="file" accept=".json,application/json" hidden></label></div><div class="hint">بياناتك محفوظة محليًا في هذا المتصفح. التصدير يحميك من فقدانها عند تغيير الجهاز أو مسح بيانات المتصفح.</div><div class="form"><button class="danger" id="clearData">مسح كل البيانات</button></div></div></section>
+</div>
+<div class="floating-timer" id="floatingTimer"><div><small id="floatLabel">جلسة تركيز</small><strong id="floatDigits">25:00</strong></div><button class="secondary" id="floatToggle">ابدأ</button><button class="del" id="floatReset" title="إعادة">↺</button></div><div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="auth-backdrop" id="authBackdrop" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+<div class="auth-box">
+<div class="section-head"><h2 id="authTitle">حساب TaskFlow</h2><button class="del" id="closeAuth" type="button" aria-label="إغلاق">×</button></div>
+<p class="muted">سجّل الدخول لحفظ مهامك ومواعيدك ومزامنتها بين أجهزتك. تقدر تستخدم التطبيق محليًا بدون حساب أيضًا.</p>
+<form id="authForm">
+<input id="authEmail" type="email" autocomplete="email" placeholder="البريد الإلكتروني" required>
+<input id="authPassword" type="password" autocomplete="current-password" placeholder="كلمة المرور (6 أحرف على الأقل)" minlength="6" required>
+<div class="auth-actions">
+<button class="primary" id="emailLogin" type="submit">تسجيل الدخول</button>
+<button class="secondary" id="emailCreate" type="button">إنشاء حساب جديد</button>
+<button class="secondary" id="googleLogin" type="button">المتابعة باستخدام Google</button>
+</div>
+</form>
+<div class="auth-error" id="authError" role="alert"></div>
+<div class="muted">بياناتك الخاصة تُحفظ داخل مساحة حسابك، ولا يستطيع المستخدمون الآخرون قراءتها.</div>
+</div></div>
+<div class="modalback" id="modalback" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal"><h2 id="modalTitle">تفاصيل</h2><div class="fields" id="fields"></div><div class="actions"><button class="secondary" id="cancel">إلغاء</button><button class="primary" id="saveModal">حفظ</button></div></div></div>
+<script>
+'use strict';
+const $=id=>document.getElementById(id), $$=s=>[...document.querySelectorAll(s)], KEY='taskflow-lifeos-v3';
+const today=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid=()=>crypto.randomUUID?crypto.randomUUID():`${Date.now()}-${Math.random().toString(36).slice(2)}`;
+const defaults=()=>({version:3,tasks:[],events:[],habits:[{id:uid(),title:'ورد القرآن',logs:{}},{id:uid(),title:'شرب مياه كفاية',logs:{}},{id:uid(),title:'مراجعة خطة بكرة',logs:{}}],focusSessions:[],prayers:{},settings:{start:'08:00',end:'22:00',buffer:10}});
+function migrate(old){const d=defaults();if(!old||typeof old!=='object')return d;d.tasks=Array.isArray(old.tasks)?old.tasks.map(t=>({...t,id:String(t.id??uid()),title:String(t.title??'مهمة'),date:t.date||today(),duration:Math.max(1,Number(t.duration)||30),priority:t.priority||'متوسطة',done:!!t.done,subtasks:Array.isArray(t.subtasks)?t.subtasks:[],recurrence:t.recurrence||'none'})):[];d.events=Array.isArray(old.events)?old.events.map(e=>({...e,id:String(e.id??uid()),title:String(e.title??'موعد'),time:e.time||'09:00',duration:Math.max(1,Number(e.duration)||60),date:e.date||today()})):[];d.habits=Array.isArray(old.habits)?old.habits.map(h=>({...h,id:String(h.id??uid()),title:String(h.title??'عادة'),logs:h.logs||{},done:undefined})):d.habits;d.prayers=old.prayers&&typeof old.prayers==='object'?old.prayers:{};d.settings={...d.settings,...old.settings};if(old.focus&&typeof old.focus==='object')for(const [date,mins] of Object.entries(old.focus)){if(Number(mins)>0)d.focusSessions.push({id:uid(),date,minutes:Number(mins),taskId:'',type:'focus',completed:true,createdAt:Date.now()})}if(Array.isArray(old.focusSessions))d.focusSessions=old.focusSessions;return d}
+let db;try{const raw=JSON.parse(localStorage.getItem(KEY)||'null');db=migrate(raw);if(!raw){const legacy=JSON.parse(localStorage.getItem('taskflow-lifeos-unified-v1')||'null');if(legacy)db=migrate(legacy)}}catch(e){db=defaults();console.warn('Storage recovery',e)}
+let tm={total:1500,left:1500,running:false,endAt:null,interval:null,type:'focus',sessionId:null,lastCountedAt:null},period='day',modalType='',editId=null,plannerPreview=null,toastTimer;
+function persist(){try{localStorage.setItem(KEY,JSON.stringify(db));if(window.TaskFlowCloud?.queueSave)window.TaskFlowCloud.queueSave(db);return true}catch(e){toast('تعذر الحفظ. صدّر نسخة احتياطية أو أفرغ مساحة المتصفح.');return false}}
+function save(){persist();render()}
+function toast(s){const t=$('toast');t.textContent=s;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2400)}
+function fmtDate(d){if(!d)return '';return new Date(d+'T12:00:00').toLocaleDateString('ar-EG',{day:'numeric',month:'short'})}
+function mins(time){if(!time||!/^([01]\d|2[0-3]):[0-5]\d$/.test(time))return null;const [h,m]=time.split(':').map(Number);return h*60+m}
+function timeStr(n){return `${String(Math.floor(n/60)).padStart(2,'0')}:${String(n%60).padStart(2,'0')}`}
+function priorityRank(p){return ({'عالية':0,'متوسطة':1,'منخفضة':2})[p]??1}
+function taskIsOverdue(t){return !t.done&&t.date<today()}
+function taskHTML(t){const overdue=taskIsOverdue(t),subs=(t.subtasks||[]);return `<div class="task ${t.done?'done':''}"><button class="check" aria-label="${t.done?'إلغاء الإنجاز':'إنجاز المهمة'}" onclick="toggleTask('${esc(t.id)}')">${t.done?'✓':'○'}</button><div class="info"><div class="name">${esc(t.title)}</div><div class="meta"><span class="tag">${esc(t.category||'شخصي')}</span><span class="${overdue?'overdue':''}">${fmtDate(t.date)||today()} · ${esc(t.time||'غير محدد')} · ${Number(t.duration)||30} د</span><span class="${t.priority==='عالية'?'high':t.priority==='منخفضة'?'low':'medium'}">● ${esc(t.priority||'متوسطة')}</span>${t.recurrence&&t.recurrence!=='none'?'<span>متكررة</span>':''}</div>${subs.length?`<div class="subtasks">${subs.map(s=>`<div class="subtask">${s.done?'✓':'○'} ${esc(s.title)}</div>`).join('')}</div>`:''}</div><div class="actions-inline"><button class="icon" onclick="openTask('${esc(t.id)}')" title="تعديل">✎</button><button class="del" onclick="deleteTask('${esc(t.id)}')" title="حذف">×</button></div></div>`}
+function eventsForDate(date=today()){const wd=String(new Date(date+'T12:00:00').getDay());return [...db.events.filter(e=>Array.isArray(e.weekdays)?e.weekdays.includes(wd):e.date===date).map(e=>({...e,type:'event'})),...db.tasks.filter(t=>t.date===date&&t.time).map(t=>({...t,type:'task',duration:Number(t.duration)||30}))].sort((a,b)=>(a.time||'').localeCompare(b.time||''))}
+function eventMarkup(date=today()){const arr=eventsForDate(date);if(!arr.length)return '<div class="empty">مفيش مواعيد أو مهام مجدولة في اليوم ده.</div>';return arr.map(e=>`<div class="timeline"><time>${esc(e.time||'—')}</time><div class="bar">${esc(e.title)} <small>${esc(e.type==='event'?(Array.isArray(e.weekdays)?'موعد أسبوعي':'موعد بتاريخ'): (e.category||'مهمة'))} · ${Number(e.duration)||30} دقيقة</small>${e.type==='event'?`<button class="del" onclick="deleteEvent('${esc(e.id)}')" aria-label="حذف الموعد">×</button>`:''}</div></div>`).join('')}
+function refreshDayStart(){
+ const open=db.tasks.filter(t=>!t.done&&t.date===today()).sort((a,b)=>priorityRank(a.priority)-priorityRank(b.priority));
+ const top=open.slice(0,3);
+ $('dayStartSummary').textContent=open.length?`قدامك ${open.length} مهمة مفتوحة. ركّز على أهم 3 بدل ما تحاول تعمل كل حاجة مرة واحدة.`:'مفيش مهام مفتوحة النهارده — وقت مناسب للمراجعة أو الراحة.';
+ $('dayStartList').innerHTML=top.length?top.map((t,i)=>`<div class="day-start-item"><span class="tag">${i+1}</span><div class="info"><div class="name">${esc(t.title)}</div><div class="meta">${esc(t.priority||'متوسطة')} · ${esc(t.category||'شخصي')}${t.time?' · '+esc(t.time):''}</div></div><button class="secondary smallbtn" onclick="toggleTask('${esc(t.id)}')">تم ✓</button></div>`).join(''):'<div class="empty">أضف مهمة صغيرة كبداية.</div>';
+ const timed=[...eventsForDate(today()).filter(e=>e.type==='event'&&e.time).map(e=>({...e,label:e.title})),...db.tasks.filter(t=>t.date===today()&&t.time&&!t.done).map(t=>({...t,label:t.title}))].map(x=>({name:x.label,start:mins(x.time),end:mins(x.time)+(Number(x.duration)||60)})).filter(x=>x.start!==null).sort((a,b)=>a.start-b.start);
+ const overlaps=[];for(let i=1;i<timed.length;i++)if(timed[i].start<timed[i-1].end)overlaps.push(`${timed[i-1].name} و${timed[i].name}`);
+ $('dayStartWarnings').innerHTML=overlaps.length?`<span class="warning-text">تنبيه: فيه تعارض في الجدول بين ${overlaps.slice(0,2).map(esc).join('، ')}. راجع المواعيد قبل اعتماد يومك.</span>`:'مفيش تعارضات واضحة في المواعيد المحددة بوقت.';
+}
+function render(){const ts=db.tasks.filter(t=>t.date===today()),done=ts.filter(t=>t.done).length,p=ts.length?Math.round(done/ts.length*100):0;$('total').textContent=ts.length;$('done').textContent=done;$('left').textContent=ts.length-done;$('focusmins').textContent=focusMinutes(today());$('pct').textContent=p+'%';$('ring').style.strokeDashoffset=440*(1-p/100);$('homeProg').style.width=p+'%';$('msg').textContent=p===100&&ts.length?'أنجزت كل مهامك! تستاهل الراحة 🏆':p>=50?'أنت قطعت نص الطريق، كمل!':'ابدأ بأول مهمة وخدها خطوة خطوة';$('list').innerHTML=ts.length?ts.map(taskHTML).join(''):'<div class="empty">لسه مفيش مهام، أضف أول مهمة ✨</div>';renderTaskList();$('scheduleList').innerHTML=eventMarkup();$('homeSchedule').innerHTML=eventMarkup();renderPrayers();renderHabits();renderFocusTaskOptions();stats();refreshDayStart()}
+function renderTaskList(){let q=($('taskSearch')?.value||'').trim().toLowerCase(),f=$('taskFilter')?.value||'all',c=$('taskCategoryFilter')?.value||'all';let arr=db.tasks.filter(t=>(!q||t.title.toLowerCase().includes(q))&&(c==='all'||t.category===c)&&(f==='all'||(f==='open'&&!t.done)||(f==='done'&&t.done)||(f==='overdue'&&taskIsOverdue(t))));$('allList').innerHTML=arr.length?arr.sort((a,b)=>(a.date||'').localeCompare(b.date||'')).map(taskHTML).join(''):'<div class="empty">مفيش مهام مطابقة للفلاتر.</div>'}
+function renderHabits(){$('habitList').innerHTML=db.habits.length?db.habits.map(h=>{let done=!!h.logs?.[today()];return `<div class="habit"><button class="check" onclick="toggleHabit('${esc(h.id)}')">${done?'✓':'○'}</button><div class="info"><div class="name">${esc(h.title)}</div><div class="meta">${done?'اتعملت النهارده':'عادة يومية'} · ${habitStreak(h)} يوم متتالي</div></div><button class="del" onclick="deleteHabit('${esc(h.id)}')">×</button></div>`}).join(''):'<div class="empty">ضيف عادة بسيطة تبدأ بيها.</div>'}
+function habitStreak(h){let n=0,d=new Date();for(let i=0;i<365;i++){let k=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;if(h.logs?.[k])n++;else if(i>0)break;d.setDate(d.getDate()-1)}return n}
+function renderPrayers(){const log=db.prayers[today()]||{},names=['الفجر','الظهر','العصر','المغرب','العشاء'],n=names.filter(x=>log[x]).length;$('prayerList').innerHTML=names.map(x=>`<div class="prayer"><b>${x}</b><button class="${log[x]?'checked':''}" onclick="togglePrayer('${x}')">${log[x]?'تمت ✓':'لسه'}</button></div>`).join('');$('prayerProg').style.width=n/5*100+'%';$('prayerText').textContent=`${n} من 5 صلوات اتأكدت النهارده`}
+function focusMinutes(date){return Math.floor(db.focusSessions.filter(s=>s.date===date&&s.type==='focus').reduce((a,s)=>a+Number(s.seconds??Number(s.minutes||0)*60),0)/60)}
+function renderFocusTaskOptions(){const sel=$('focusTask'),v=sel.value;sel.innerHTML='<option value="">جلسة عامة</option>'+db.tasks.filter(t=>!t.done).map(t=>`<option value="${esc(t.id)}">${esc(t.title)}</option>`).join('');sel.value=v}
+function toggleTask(id){const t=db.tasks.find(x=>x.id===id);if(!t)return;t.done=!t.done;if(t.done&&t.recurrence&&t.recurrence!=='none')createNextOccurrence(t);save();toast(t.done?'مهمة اتنجزت 🎉':'تم التحديث')}
+function createNextOccurrence(t){let d=new Date((t.date||today())+'T12:00:00');d.setDate(d.getDate()+(t.recurrence==='daily'?1:t.recurrence==='weekly'?7:30));const date=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;if(!db.tasks.some(x=>x.title===t.title&&x.date===date))db.tasks.push({...t,id:uid(),date,done:false,time:'',subtasks:(t.subtasks||[]).map(s=>({...s,done:false}))})}
+function deleteTask(id){const t=db.tasks.find(x=>x.id===id);if(!t)return;if(!confirm('حذف المهمة؟'))return;db.trash ||= [];db.trash.push({...t,deletedAt:Date.now()});db.tasks=db.tasks.filter(x=>x.id!==id);save();toast('اتحذفت. تقدر تسترجعها من النسخة الاحتياطية')}
+function toggleHabit(id){const h=db.habits.find(x=>x.id===id);if(!h)return;h.logs||={};h.logs[today()]=!h.logs[today()];save()}
+function deleteHabit(id){if(!confirm('حذف العادة؟'))return;db.habits=db.habits.filter(x=>x.id!==id);save()}
+function deleteEvent(id){if(!confirm('حذف الموعد؟'))return;db.events=db.events.filter(x=>x.id!==id);save()}
+function togglePrayer(n){db.prayers[today()]||={};db.prayers[today()][n]=!db.prayers[today()][n];save();toast(db.prayers[today()][n]?'ربنا يتقبل منك 🤍':'تم تحديث السجل')}
+function switchPage(p){$$('.page').forEach(x=>x.classList.toggle('active',x.id===p));$$('[data-page]').forEach(x=>x.classList.toggle('active',x.dataset.page===p));if(p==='stats')stats()}
+$$('[data-page]').forEach(b=>b.onclick=()=>switchPage(b.dataset.page));
+$('quickForm').onsubmit=e=>{e.preventDefault();const title=$('quickTitle').value.trim();if(!title)return;addTask({title,category:$('quickCategory').value,priority:$('quickPriority').value,date:today(),duration:30});$('quickTitle').value='';toast('المهمة اتضافت ✨')};
+function addTask(t){const duplicate=db.tasks.some(x=>!x.done&&x.date===t.date&&x.title.trim().toLowerCase()===t.title.trim().toLowerCase());if(duplicate){toast('المهمة موجودة بالفعل في نفس اليوم');return false}db.tasks.push({...t,id:uid(),done:false,time:t.time||'',subtasks:t.subtasks||[],recurrence:t.recurrence||'none'});save();return true}
+function openTask(id=null){modalType='task';editId=id;const t=id?db.tasks.find(x=>x.id===id):{};if(id&&!t)return; $('modalTitle').textContent=id?'تعديل المهمة':'مهمة جديدة';showFields([['title','اسم المهمة','text',t.title||'','full'],['category','القسم','select',t.category||'شخصي',['دراسة','شغل','صلاة','صحة','شخصي','أخرى']],['priority','الأولوية','select',t.priority||'متوسطة',['عالية','متوسطة','منخفضة']],['date','التاريخ','date',t.date||today()],['time','الوقت','time',t.time||''],['duration','المدة بالدقائق','number',t.duration||30],['recurrence','التكرار','select',t.recurrence||'none',['none','daily','weekly','monthly']],['subtasks','مهام فرعية (كل واحدة بسطر)','textarea',(t.subtasks||[]).map(s=>s.title).join('\\n'),'full']])}
+function openEvent(){modalType='event';editId=null;$('modalTitle').textContent='موعد أسبوعي ثابت';showFields([['title','اسم الموعد','text','','full'],['time','وقت البداية','time','17:00'],['duration','المدة بالدقائق','number',60],['detail','ملاحظة','text','','full']]);const row=document.createElement('label');row.className='full';row.innerHTML='الأيام المتكررة <div id="weekdayChecks" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px">'+[['0','الأحد'],['1','الاثنين'],['2','الثلاثاء'],['3','الأربعاء'],['4','الخميس'],['5','الجمعة'],['6','السبت']].map(([v,l])=>`<label style="display:flex;align-items:center;gap:4px"><input type="checkbox" name="weekdays" value="${v}">${l}</label>`).join('')+'</div>'; $('fields').appendChild(row)}
+function openHabit(){modalType='habit';editId=null;$('modalTitle').textContent='عادة جديدة';showFields([['title','اسم العادة','text','','full']])}
+function showFields(fs){$('fields').innerHTML=fs.map(([n,l,type,val,opts])=>`<label class="${opts==='full'?'full':''}">${l}${type==='select'?`<select name="${n}">${opts.map(o=>`<option value="${esc(o)}" ${o===val?'selected':''}>${o==='none'?'بدون':o==='daily'?'يومي':o==='weekly'?'أسبوعي':o==='monthly'?'شهري':esc(o)}</option>`).join('')}</select>`:type==='textarea'?`<textarea name="${n}" rows="3">${esc(val)}</textarea>`:`<input name="${n}" type="${type}" value="${esc(val)}" ${n==='title'?'required':''} ${n==='duration'?'min="1" max="1440"':''}>`}</label>`).join('');$('modalback').classList.add('show');setTimeout(()=>$('fields').querySelector('input,select,textarea')?.focus(),20)}
+function closeModal(){$('modalback').classList.remove('show')} $('cancel').onclick=closeModal;$('modalback').onclick=e=>{if(e.target.id==='modalback')closeModal()};document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+$('saveModal').onclick=()=>{const d={};$$('#fields [name]').forEach(el=>{if(el.name==='weekdays'){d.weekdays=$$('[name=weekdays]:checked').map(x=>x.value)}else d[el.name]=el.value});if(!d.title?.trim()){toast('اكتب الاسم الأول');return}if(modalType==='task'){d.duration=Math.max(1,Math.min(1440,Number(d.duration)||30));d.subtasks=(d.subtasks||'').split('\n').map(x=>x.trim()).filter(Boolean).map(title=>({id:uid(),title,done:false}));d.id=editId||uid();d.done=editId?!!db.tasks.find(t=>t.id===editId)?.done:false;if(editId){if(db.tasks.some(t=>t.id!==editId&&t.date===d.date&&t.title.trim().toLowerCase()===d.title.trim().toLowerCase()&&!t.done)){toast('فيه مهمة مشابهة في نفس اليوم');return}db.tasks=db.tasks.map(t=>t.id===editId?d:t)}else{if(!addTask(d))return;closeModal();return}}else if(modalType==='event'){d.duration=Math.max(1,Math.min(1440,Number(d.duration)||60));d.id=uid();if(!Array.isArray(d.weekdays)||!d.weekdays.length){toast('اختار يوم واحد على الأقل');return}delete d.date;db.events.push(d)}else if(modalType==='habit'){db.habits.push({id:uid(),title:d.title.trim(),logs:{}})}closeModal();save();toast('اتحفظت بنجاح 🌿')};
+function stopTimer(){if(tm.interval)clearInterval(tm.interval);tm.interval=null;tm.running=false;tm.endAt=null;tm.lastCountedAt=null;$('start').textContent='استكمال';$('floatToggle').textContent='استكمال'}
+function updateTimerDisplay(){tm.left=Math.max(0,Math.ceil((tm.endAt-Date.now())/1000));const m=Math.floor(tm.left/60),s=tm.left%60,txt=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');$('digits').textContent=txt;$('floatDigits').textContent=txt;$('floatLabel').textContent=$('timerhint').textContent||'جلسة تركيز'}
+function setTimer(minutes,type='focus'){if(tm.interval)clearInterval(tm.interval);if(tm.running)tick();tm.sessionId=null;tm.running=false;tm.endAt=null;tm.total=minutes*60;tm.left=tm.total;tm.type=type;$('timerhint').textContent=type==='break'?'استراحة':'جلسة تركيز';$('start').textContent='ابدأ';$('floatToggle').textContent='ابدأ';updateTimerStatic()}
+function updateTimerStatic(){const txt=`${String(Math.floor(tm.left/60)).padStart(2,'0')}:${String(tm.left%60).padStart(2,'0')}`;$('digits').textContent=txt;$('floatDigits').textContent=txt;$('floatLabel').textContent=$('timerhint').textContent}
+function finishTimer(){stopTimer();tm.left=0;updateTimerStatic();if(tm.type==='focus'){const rec=db.focusSessions.find(x=>x.id===tm.sessionId);if(rec){rec.seconds=Math.max(Number(rec.seconds||0),Number(tm.total||0));rec.minutes=Math.floor(rec.seconds/60);rec.completed=true;rec.updatedAt=Date.now()}tm.sessionId=null;persist();render()}$('timerhint').textContent='انتهى الوقت! خد استراحة 🎉';$('floatLabel').textContent='انتهى الوقت';toast(tm.type==='focus'?'أحسنت، خلصت جلسة التركيز!':'انتهت الاستراحة');}
+function tick(){if(tm.running&&tm.type==='focus'&&tm.sessionId){const now=Date.now();const delta=Math.max(0,Math.floor((now-(tm.lastCountedAt||now))/1000));if(delta){const rec=db.focusSessions.find(x=>x.id===tm.sessionId);if(rec){rec.seconds=Number(rec.seconds||0)+delta;rec.minutes=Math.floor(rec.seconds/60);rec.updatedAt=now;persist();if(rec.seconds%60<delta)render()}tm.lastCountedAt=now}}updateTimerDisplay();if(tm.left<=0)finishTimer()}
+function startTimer(){if(tm.running){tick();stopTimer();return}if(tm.left<=0)tm.left=tm.total;if(tm.type==='focus'&&!tm.sessionId){const rec={id:uid(),date:today(),minutes:0,seconds:0,taskId:$('focusTask').value,type:'focus',completed:false,createdAt:Date.now()};db.focusSessions.push(rec);tm.sessionId=rec.id;persist()}tm.endAt=Date.now()+tm.left*1000;tm.lastCountedAt=Date.now();tm.running=true;$('start').textContent='إيقاف مؤقت';$('floatToggle').textContent='إيقاف';if(tm.interval)clearInterval(tm.interval);tm.interval=setInterval(tick,250);tick()}
+$('start').onclick=startTimer;$('reset').onclick=()=>setTimer(tm.total/60,tm.type);$('floatToggle').onclick=startTimer;$('floatReset').onclick=()=>setTimer(tm.total/60,tm.type);
+$$('[data-min]').forEach(b=>b.onclick=()=>{ $$('[data-min]').forEach(x=>x.classList.toggle('active',x===b));setTimer(Number(b.dataset.min),b.dataset.min==='5'?'break':'focus')});
+$('set').onclick=()=>{const n=Number($('custom').value);if(!Number.isInteger(n)||n<1||n>180){toast('اختار مدة صحيحة من 1 لـ 180 دقيقة');return}setTimer(n,'focus')};
+function parseClock(line){const m=line.match(/(?:الساعة\s*)?(\d{1,2})(?::(\d{2}))?\s*(صباحًا|صباحا|الصبح|ص|مساءً|مساء|بالليل|م)?/i);if(!m)return '';let h=+m[1],mi=+(m[2]||0),p=m[3]||'';if(h>23||mi>59)return '';if(/مساء|بالليل|م$/.test(p)&&h<12)h+=12;if(/صباح|الصبح|ص$/.test(p)&&h===12)h=0;return timeStr(h*60+mi)}
+function parseDuration(line){let m=line.match(/(\d{1,3})\s*(?:دقيقة|دقايق|دقائق|د)\b/i);if(m)return Math.max(5,Math.min(1440,+m[1]));m=line.match(/(\d{1,2})\s*(?:ساعة|ساعات)/i);if(m)return Math.max(5,Math.min(1440,+m[1]*60));return /(مراجعة|مذاكرة|حل|واجب|قراءة)/i.test(line)?45:30}
+function parseRange(line){const re=/(?:من\s*)?(\d{1,2})(?::(\d{2}))?\s*(صباحًا|صباحا|الصبح|ص|مساءً|مساء|بالليل|م)?\s*(?:إلى|لـ|حتى|-|–)\s*(\d{1,2})(?::(\d{2}))?\s*(صباحًا|صباحا|الصبح|ص|مساءً|مساء|بالليل|م)?/i;const m=line.match(re);if(!m)return null;const cv=(h,mi,ap)=>{h=+h;mi=+(mi||0);if(/مساء|بالليل|م$/.test(ap||'')&&h<12)h+=12;if(/صباح|الصبح|ص$/.test(ap||'')&&h===12)h=0;return h*60+mi};let a=cv(m[1],m[2],m[3]),b=cv(m[4],m[5],m[6]);if(b<=a&&!(m[6]&&/صباح/.test(m[6])))b+=720;return a>=0&&b>a&&b<=2880?{start:a%1440,duration:b-a}:null}
+function organizeDump(){const raw=$('brainDump').value.trim();if(!raw){toast('اكتب مهامك ومواعيدك الأول');return}const lines=raw.split(/\n|،|؛/).map(x=>x.replace(/^[\s\-•*]+/,'').trim()).filter(Boolean);let proposed=[],duplicates=[],addedEvents=0;const baseDate=today();for(const line of lines){const range=parseRange(line),time=parseClock(line),isEvent=!!range||!!time||/(ميعاد|موعد|درس|محاضرة|اجتماع|دكتور|مقابلة)/i.test(line);if(isEvent){const start=range?timeStr(range.start):time||'09:00',duration=range?range.duration:parseDuration(line)||60,title=line.replace(/(?:من\s*)?\d{1,2}(?::\d{2})?\s*(?:صباحًا|صباحا|الصبح|ص|مساءً|مساء|بالليل|م)?\s*(?:إلى|لـ|حتى|-|–)\s*\d{1,2}(?::\d{2})?\s*(?:صباحًا|صباحا|الصبح|ص|مساءً|مساء|بالليل|م)?/i,'').replace(/الساعة\s*\d{1,2}(?::\d{2})?\s*(?:صباحًا|صباحا|الصبح|ص|مساءً|مساء|بالليل|م)?/i,'').trim()||line;proposed.push({kind:'event',title,date:baseDate,time:start,duration,detail:'موعد من المنظّم'});addedEvents++}else{const priority=/(مهم|ضروري|عاجل|امتحان|تسليم)/i.test(line)?'عالية':'متوسطة',duration=parseDuration(line),category=/(مذاكرة|واجب|مراجعة|امتحان|رياضيات|إنجليزي)/i.test(line)?'دراسة':'شخصي';if(db.tasks.some(t=>!t.done&&t.date===baseDate&&t.title.trim().toLowerCase()===line.toLowerCase())){duplicates.push(line);continue}proposed.push({kind:'task',title:line,date:baseDate,time:'',duration,priority,category,recurrence:'none'})}}
+const scheduled=planTasks(proposed);plannerPreview={items:scheduled,duplicates};const nTask=scheduled.filter(x=>x.kind==='task').length,nEvent=scheduled.filter(x=>x.kind==='event').length;$('aiResult').innerHTML=`<div class="ai-result"><b>اقتراح مبدئي لليوم ✦</b><br>${nTask} مهام و${nEvent} مواعيد مقترحة. ${duplicates.length?`تم استبعاد ${duplicates.length} مهمة مكررة.`:''}<div class="list" style="margin-top:10px">${scheduled.map((x,i)=>`<div class="task"><span class="tag">${x.kind==='event'?'موعد':'مهمة'}</span><div class="info"><div class="name">${esc(x.title)}</div><div class="meta">${esc(x.time||'غير مجدولة')} · ${x.duration} د</div></div><button class="icon" onclick="removePreview(${i})">×</button></div>`).join('')}</div><div class="form"><button class="primary" onclick="applyPlan()">اعتماد الخطة</button><button class="secondary" onclick="plannerPreview=null;$('aiResult').innerHTML=''">إلغاء</button></div><div class="muted">الأوقات المقترحة قابلة للتعديل بعد الاعتماد. راجع أي موعد غير واضح.</div></div>`}
+function planTasks(items){const existing=eventsForDate().filter(x=>x.time).map(x=>{const st=mins(x.time);return [st,st+(Number(x.duration)||60)]});let busy=existing.slice(),tasks=items.filter(x=>x.kind==='task').sort((a,b)=>priorityRank(a.priority)-priorityRank(b.priority)),events=items.filter(x=>x.kind==='event');for(const e of events){const st=mins(e.time);if(st!==null)busy.push([st,st+(Number(e.duration)||60)])}let start=mins(db.settings.start)||480,end=mins(db.settings.end)||1320,buffer=Math.max(0,Math.min(60,Number(db.settings.buffer)||0)),cursor=start;for(const t of tasks){const dur=Math.max(5,Math.min(180,Number(t.duration)||30));let slot=cursor;while(slot+dur<=end&&busy.some(([a,b])=>slot<b&&slot+dur>a)){const conflict=busy.find(([a,b])=>slot<b&&slot+dur>a);slot=Math.max(slot,conflict[1]+buffer)}if(slot+dur<=end){t.time=timeStr(slot);busy.push([slot,slot+dur]);cursor=slot+dur+buffer}else t.time='';}return [...events,...tasks]}
+function removePreview(i){if(!plannerPreview)return;plannerPreview.items.splice(i,1);organizePreviewRender()}
+function organizePreviewRender(){const p=plannerPreview;if(!p)return;$('aiResult').innerHTML=`<div class="ai-result"><b>اقتراح مبدئي ✦</b><div class="list" style="margin-top:10px">${p.items.map((x,i)=>`<div class="task"><span class="tag">${x.kind==='event'?'موعد':'مهمة'}</span><div class="info"><div class="name">${esc(x.title)}</div><div class="meta">${esc(x.time||'غير مجدولة')} · ${x.duration} د</div></div><button class="icon" onclick="removePreview(${i})">×</button></div>`).join('')}</div><div class="form"><button class="primary" onclick="applyPlan()">اعتماد الخطة</button><button class="secondary" onclick="plannerPreview=null;$('aiResult').innerHTML=''">إلغاء</button></div></div>`}
+function applyPlan(){if(!plannerPreview)return;for(const x of plannerPreview.items){if(x.kind==='event')db.events.push({...x,id:uid()});else db.tasks.push({...x,id:uid(),done:false,subtasks:[]})}const n=plannerPreview.items.length;plannerPreview=null;persist();render();$('aiResult').innerHTML='<div class="ai-result">تم اعتماد الخطة. تقدر تراجعها وتعدّلها من صفحة الجدول والمهام.</div>';toast(`تم اعتماد ${n} عناصر`)}
+$('organizeBtn').onclick=organizeDump;$('clearDump').onclick=()=>{$('brainDump').value='';$('aiResult').innerHTML='';plannerPreview=null};
+function dates(){const d=new Date(),arr=[];if(period==='day')return[today()];if(period==='week'){const off=d.getDay()===0?-6:1-d.getDay(),m=new Date(d);m.setDate(d.getDate()+off);for(let i=0;i<7;i++){const x=new Date(m);x.setDate(m.getDate()+i);arr.push(`${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}-${String(x.getDate()).padStart(2,'0')}`)}}else for(let i=1;i<=new Date(d.getFullYear(),d.getMonth()+1,0).getDate();i++)arr.push(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(i).padStart(2,'0')}`);return arr}
+function stats(){const ds=dates(),ts=db.tasks.filter(t=>ds.includes(t.date)),done=ts.filter(t=>t.done).length,focus=ds.reduce((s,d)=>s+focusMinutes(d),0);$('pd').textContent=done;$('pf').textContent=focus;$('pr').textContent=(ts.length?Math.round(done/ts.length*100):0)+'%';$('charttitle').textContent=period==='day'?'إنجازك اليوم':period==='week'?'إنجازك الأسبوعي':'إنجازك الشهري';const vals=ds.map(d=>db.tasks.filter(t=>t.date===d&&t.done).length),max=Math.max(1,...vals);$('chart').innerHTML=vals.map((v,i)=>`<div class="col"><div class="bargraph" style="height:${Math.max(v?8:3,v/max*100)}%"></div><span>${period==='month'?i+1:period==='week'?['إث','ث','أر','خ','ج','س','ح'][i]:'اليوم'}</span></div>`).join('');const grouped={};db.focusSessions.filter(s=>ds.includes(s.date)&&s.type==='focus'&&s.completed).forEach(s=>{const t=db.tasks.find(t=>t.id===s.taskId);const name=t?.title||'جلسة عامة';grouped[name]=(grouped[name]||0)+s.minutes});$('focusBreakdown').innerHTML=Object.keys(grouped).length?Object.entries(grouped).sort((a,b)=>b[1]-a[1]).map(([n,m])=>`<div class="timeline"><span>${m} د</span><div class="bar">${esc(n)}</div></div>`).join(''):'لا توجد جلسات تركيز مكتملة في الفترة.'}
+$$('[data-period]').forEach(b=>b.onclick=()=>{period=b.dataset.period;$$('[data-period]').forEach(x=>x.classList.toggle('active',x===b));stats()});
+$('taskSearch').addEventListener('input',renderTaskList);$('taskFilter').onchange=renderTaskList;$('taskCategoryFilter').onchange=renderTaskList;
+function loadSettings(){$('dayStart').value=db.settings.start||'08:00';$('dayEnd').value=db.settings.end||'22:00';$('buffer').value=db.settings.buffer??10}
+$('saveSettings').onclick=()=>{const a=mins($('dayStart').value),b=mins($('dayEnd').value),buf=Number($('buffer').value);if(a===null||b===null||b<=a||!Number.isFinite(buf)||buf<0||buf>60){toast('راجع ساعات اليوم والفاصل');return}db.settings={start:$('dayStart').value,end:$('dayEnd').value,buffer:buf};save();toast('تم حفظ الإعدادات')};
+$('exportBtn').onclick=()=>{const blob=new Blob([JSON.stringify(db,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`taskflow-backup-${today()}.json`;a.click();URL.revokeObjectURL(url);toast('تم تجهيز النسخة الاحتياطية')};
+$('importFile').onchange=async e=>{const file=e.target.files?.[0];if(!file)return;try{const data=JSON.parse(await file.text());if(!data||!Array.isArray(data.tasks)||!Array.isArray(data.events)||data.tasks.some(t=>!t||typeof t.title!=='string')||data.events.some(e=>!e||typeof e.title!=='string'))throw Error('invalid');if(!confirm('الاستيراد سيستبدل البيانات الحالية. هل تريد المتابعة؟'))return;db=migrate(data);save();loadSettings();toast('تم استيراد النسخة')}catch(err){toast('ملف النسخة غير صالح')}finally{e.target.value=''}};
+$('clearData').onclick=()=>{if(!confirm('تأكيد مسح كل بيانات TaskFlow؟ لا يمكن التراجع.'))return;if(!confirm('تأكيد أخير: هل صدّرت نسخة احتياطية؟'))return;db=defaults();save();loadSettings();toast('تمت إعادة ضبط التطبيق')};
+$('date').textContent=new Date().toLocaleDateString('ar-EG',{weekday:'long',day:'numeric',month:'long',year:'numeric'});$('hello').textContent=new Date().getHours()<12?'صباح الخير ☀️':new Date().getHours()<18?'مساء الإنجاز ✨':'مساء الخير 🌙';loadSettings();render();updateTimerStatic();
+
+// واجهة محدودة لربط Firebase مع قاعدة التطبيق الحالية.
+window.TaskFlowBridge = {
+  getData: () => db,
+  replaceData: (data) => {
+    db = migrate(data);
+    try { localStorage.setItem(KEY, JSON.stringify(db)); } catch (_) {}
+    loadSettings();
+    render();
+    updateTimerStatic();
+  },
+  refresh: () => { loadSettings(); render(); updateTimerStatic(); }
+};
+
+</script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
+import {
+  getAuth, onAuthStateChanged, createUserWithEmailAndPassword,
+  signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, signOut
+} from "https://www.gstatic.com/firebasejs/13.2.0/firebase-auth.js";
+import {
+  getFirestore, doc, getDoc, setDoc, serverTimestamp
+} from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCcRJIG8ZYiBgLueHLHOiW_w_2tMwDVDt-U",
+  authDomain: "taskflow-lifeos-fc087.firebaseapp.com",
+  projectId: "taskflow-lifeos-fc087",
+  storageBucket: "taskflow-lifeos-fc087.firebasestorage.app",
+  messagingSenderId: "642614537193",
+  appId: "1:642614537193:web:9d2979d96342eb5feb7978"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const firestore = getFirestore(app);
+const $id = (id) => document.getElementById(id);
+const backdrop = $id("authBackdrop");
+const errorBox = $id("authError");
+const statusBox = $id("cloudStatus");
+const accountButton = $id("accountButton");
+const signOutButton = $id("signOutButton");
+const authForm = $id("authForm");
+let currentUser = null;
+let cloudReady = false;
+let saveTimer = null;
+let maxSaveTimer = null;
+let saving = false;
+let pendingData = null;
+
+function setStatus(message) {
+  if (statusBox) statusBox.textContent = message;
+}
+function showError(error) {
+  const code = error?.code || "";
+  const messages = {
+    "auth/email-already-in-use": "البريد الإلكتروني مستخدم بالفعل. جرّب تسجيل الدخول.",
+    "auth/invalid-email": "البريد الإلكتروني غير صحيح.",
+    "auth/weak-password": "كلمة المرور ضعيفة. استخدم 6 أحرف على الأقل.",
+    "auth/invalid-credential": "البريد أو كلمة المرور غير صحيحة.",
+    "auth/popup-closed-by-user": "تم إغلاق نافذة Google قبل إكمال الدخول.",
+    "auth/unauthorized-domain": "الدومين الحالي غير مضاف في Authorized domains داخل Firebase.",
+    "permission-denied": "قواعد Firestore لا تسمح بالوصول. راجع نشر Rules.",
+    "unavailable": "الاتصال بالخدمة غير متاح حاليًا. تحقق من الإنترنت وحاول مرة أخرى."
+  };
+  errorBox.textContent = messages[code] || `حصل خطأ: ${error?.message || "حاول مرة أخرى."}`;
+}
+function openAuth() {
+  errorBox.textContent = "";
+  backdrop.classList.add("show");
+}
+function closeAuth() { backdrop.classList.remove("show"); }
+
+accountButton?.addEventListener("click", () => currentUser ? setStatus("الحساب متصل") : openAuth());
+$id("closeAuth")?.addEventListener("click", closeAuth);
+backdrop?.addEventListener("click", (e) => { if (e.target === backdrop) closeAuth(); });
+
+async function saveCloud(data) {
+  if (!currentUser || !cloudReady) return;
+  const ref = doc(firestore, "users", currentUser.uid, "appData", "main");
+  await setDoc(ref, { data, schemaVersion: 1, updatedAt: serverTimestamp() });
+}
+async function flushSave() {
+  if (!currentUser || !cloudReady || !pendingData || saving) return;
+  const snapshot = pendingData;
+  pendingData = null;
+  saving = true;
+  try {
+    await saveCloud(snapshot);
+    setStatus("متزامن ☁️");
+  } catch (error) {
+    console.error("TaskFlow cloud save:", error);
+    pendingData = snapshot;
+    setStatus("تعذرت المزامنة — البيانات محفوظة على الجهاز");
+  } finally {
+    saving = false;
+    if (pendingData && currentUser && cloudReady) {
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(flushSave, 1800);
+    }
+  }
+}
+function queueSave(data) {
+  if (!currentUser || !cloudReady) return;
+  pendingData = JSON.parse(JSON.stringify(data));
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(flushSave, 1800);
+  if (!maxSaveTimer) {
+    maxSaveTimer = setTimeout(() => {
+      maxSaveTimer = null;
+      flushSave();
+    }, 7000);
+  }
+}
+window.TaskFlowCloud = { queueSave };
+
+async function syncUser(user) {
+  currentUser = user;
+  cloudReady = false;
+  pendingData = null;
+  clearTimeout(saveTimer);
+  clearTimeout(maxSaveTimer);
+  maxSaveTimer = null;
+  if (!user) {
+    accountButton.textContent = "دخول / مزامنة";
+    signOutButton.hidden = true;
+    setStatus("حفظ على هذا الجهاز");
+    return;
+  }
+  accountButton.textContent = user.displayName || user.email || "حسابي";
+  signOutButton.hidden = false;
+  setStatus("جاري تحميل بياناتك...");
+  try {
+    const ref = doc(firestore, "users", user.uid, "appData", "main");
+    const snap = await getDoc(ref);
+    if (snap.exists() && snap.data()?.data) {
+      window.TaskFlowBridge.replaceData(snap.data().data);
+    } else {
+      await setDoc(ref, {
+        data: window.TaskFlowBridge.getData(),
+        schemaVersion: 1,
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp()
+      });
+    }
+    cloudReady = true;
+    setStatus("متزامن ☁️");
+    closeAuth();
+  } catch (error) {
+    console.error("TaskFlow cloud sync:", error);
+    setStatus("تعذرت المزامنة");
+    showError(error);
+  }
+}
+
+authForm?.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  errorBox.textContent = "";
+  const email = $id("authEmail").value.trim();
+  const password = $id("authPassword").value;
+  const button = $id("emailLogin");
+  button.disabled = true;
+  try { await signInWithEmailAndPassword(auth, email, password); }
+  catch (error) { showError(error); }
+  finally { button.disabled = false; }
+});
+$id("emailCreate")?.addEventListener("click", async () => {
+  errorBox.textContent = "";
+  const email = $id("authEmail").value.trim();
+  const password = $id("authPassword").value;
+  if (!email || password.length < 6) {
+    errorBox.textContent = "اكتب بريدًا صحيحًا وكلمة مرور من 6 أحرف على الأقل.";
+    return;
+  }
+  try { await createUserWithEmailAndPassword(auth, email, password); }
+  catch (error) { showError(error); }
+});
+$id("googleLogin")?.addEventListener("click", async () => {
+  errorBox.textContent = "";
+  try { await signInWithPopup(auth, new GoogleAuthProvider()); }
+  catch (error) { showError(error); }
+});
+signOutButton?.addEventListener("click", async () => {
+  if (!confirm("تسجيل الخروج من TaskFlow؟")) return;
+  try { await signOut(auth); }
+  catch (error) { showError(error); }
+});
+onAuthStateChanged(auth, (user) => { syncUser(user); });
+</script>
+</body></html>
